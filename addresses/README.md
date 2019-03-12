@@ -126,3 +126,8 @@ For native segwit addressed, the `keyhash`, segwit version's number (0), and net
 ```
 native_address = encode('bc', 0, keyhash)
 ```
+
+## Resources
+https://bitcoincore.org/en/segwit_wallet_dev/
+https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki
+https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses
