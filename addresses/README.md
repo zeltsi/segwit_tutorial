@@ -27,7 +27,7 @@ private_key = (random.getrandbits(256)).to_bytes(32, byteorder="little", signed=
 ```
 
 ## Private key to signing key
-The private key is then attached to the elliptic curve defined at the [SECP256k1 documentation](http://www.secg.org/sec2-v2.pdf). The easiest way to do so is using python's ECDSA (Elliptic Curve Digital Signature Algorithm) library. This library contains all the necessary mathematical primitive and function that are required to properly initiate and manipulate (sign/verify) our key pair and messages.
+The private key is then attached to the elliptic curve defined at the [SECP256k1 documentation](http://www.secg.org/sec2-v2.pdf). The easiest way to do so is using python's ECDSA (Elliptic Curve Digital Signature Algorithm) library. This library contains all the necessary mathematical primitives and functions that are required to properly initiate and manipulate (sign/verify) our key pair and messages.
 ```
 signing_key = ecdsa.SigningKey.from_string(private_key, curve=ecdsa.SECP256k1)
 ```
@@ -112,7 +112,7 @@ The final addresses is made out of:
 2. The hashed_P2WPKH_V0
 3. The checksum
 ```
-bin_addr = bytes.fromhex('05') + hashed_redeemScript + checksum
+bin_addr = bytes.fromhex('05') + hashed_P2WPKH_V0 + checksum
 ```
 ## Encoding
 ### Base58 (nested)
