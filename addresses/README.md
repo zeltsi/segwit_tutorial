@@ -75,8 +75,11 @@ keyhash = ripemd160.digest()
 
 ## P2WPKH_V0
 The segwit documentation defines the following script as segwit's P2WPKH_V0 (Pay To Witness Public Key Hash - Version 0). This script is at the heart of every segwit transacion. Both native and nested.
+
 OP_0 `0x00`
+
 OP_PUSH20 `0x14`
+
 keyhash
 ```
 P2WPKH_V0 = bytes.fromhex(f'0014{keyhash.hex()})
@@ -85,9 +88,13 @@ P2WPKH_V0 = bytes.fromhex(f'0014{keyhash.hex()})
 ## Divergence: Nested (backward compatible) segwit script
 Many old clients don't support the execution of the `P2WPKH_V0` script. The solution is to generate a P2SH (Pay To Script Hash) scriptPubKey. Such scripts have been supported by most bitcoin's wallets [since 2013](https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki
 ).
+
 OP_HASH160 `0xa9`
+
 hashed P2WPKH_V0
+
 OP_EQUAL `0x87`
+
 Our P2WPKH_V0 is hashed and nested inside such a script
 ```
 sha256_P2WPKH_V0 = hashlib.sha256(P2WPKH_V0)
@@ -138,4 +145,3 @@ https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses
 https://en.bitcoin.it/wiki/Script
 
 https://en.bitcoin.it/wiki/Address
-
