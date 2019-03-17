@@ -12,9 +12,9 @@ verifying_key = signing_key.get_verifying_key()
 x_cor = bytes.fromhex(verifying_key.to_string().hex())[:32]         # The first 32 bytes are the x cordinate.
 y_cor = bytes.fromhex(verifying_key.to_string().hex())[32:]         # The last 32 bytes are the y cordinate.
 if int.from_bytes(y_cor, byteorder="big", signed=True) % 2 == 0:    # We need to turn the y_cor (bytes) into a number.
-    public_key = bytes.fromhex("02" + x_cor.hex())
+    public_key = bytes.fromhex(f'02{x_cor.hex()}')
 else:
-    public_key = bytes.fromhex("03" + x_cor.hex())
+    public_key = bytes.fromhex(f'03{x_cor.hex()}')
     
 import hashlib
 
@@ -27,7 +27,7 @@ ripemd160.update(sha256_1.digest())
 keyhash = ripemd160.digest()
 
 # Placing keyhash in a P2WPKH_VO script
-P2WPKH_VO = bytes.fromhex('0014%s' % keyhash.hex())
+P2WPKH_VO = bytes.fromhex(f'0014{keyhash.hex()}')
 
 # Hashing P2WPKH_VO script
 sha256_P2WPKH_VO = hashlib.sha256(P2WPKH_VO)
@@ -38,14 +38,14 @@ ripemd160_P2WPKH_VO.update(sha256_P2WPKH_VO.digest())
 hashed_P2WPKH_VO = ripemd160_P2WPKH_VO.digest()
 
 # Nesting hashed P2WPKH_VO inside a P2SH
-P2SH_P2WPKH_V0 = bytes.fromhex('a9%s87' % hashed_P2WPKH_VO.hex())
+P2SH_P2WPKH_V0 = bytes.fromhex(f'a9{hashed_P2WPKH_VO.hex()}87')
 
 # Getting checksum
-checksum_full = hashlib.sha256(hashlib.sha256(bytes.fromhex('05') + hashed_P2WPKH_VO).digest()).digest()
+checksum_full = hashlib.sha256(hashlib.sha256(bytes.fromhex(f'05{hashed_P2WPKH_VO.hex()}')).digest()).digest()
 checksum = checksum_full[:4]
 
 # Assembling the nested address
-bin_addr = bytes.fromhex('05') + hashed_P2WPKH_VO + checksum
+bin_addr = bytes.fromhex(f'05{hashed_P2WPKH_VO.hex()}{checksum.hex()}')
 
 # Encode nested address in base58
 import base58

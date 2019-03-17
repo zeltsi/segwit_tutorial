@@ -53,10 +53,10 @@ uncompressed_public_key = bytes.fromhex(f'04{x_cor.hex()}{y_cor.hex()}')
 
 Because we already know the elliptic graph that we're using [(documented in the SECP256k1 paper)](http://www.secg.org/sec2-v2.pdf), we can reduce the size of our public key by dropping the `y_cor`. After all, when we have the formula y^{2}=x^{3}+ax+b, as well as points a, b and x, we can just solve for y. However, there are two possible results for y, so we should also provide the sign of our result.
 ```
-if int.from_bytes(y_cor, byteorder="big", signed=False) % 2 == 0:
-   public_key = bytes.fromhex('02' + x_cor.hex())
+if int.from_bytes(y_cor, byteorder="big", signed=True) % 2 == 0:    # We need to turn the y_cor (bytes) into a number.
+    public_key = bytes.fromhex(f'02{x_cor.hex()}')
 else:
-   public_key = bytes.fromhex('03' + x_cor.hex())
+    public_key = bytes.fromhex(f'03{x_cor.hex()}')
 ```
 
 ## Compressed public key to keyhash
@@ -104,7 +104,7 @@ pub_script = bytes.fromhex(f'a9{hashed_P2WPKH_V0}87')
 ## P2SH checksum
 The checksum is defined as the first 4 bytes of the result of `sha256(sha256(0x05+hashed_P2WPKH_V0))`. The prefix `0x05` is used for the mainnet.
 ```
-checksum_full = hashlib.sha256(hashlib.sha256(bytes.fromhex(f'05{hashed_P2WPKH_V0}').digest()).digest()
+checksum_full = hashlib.sha256(hashlib.sha256(bytes.fromhex(f'05{hashed_P2WPKH_VO.hex()}')).digest()).digest()
 checksum = checksum_full[:4]
 ```
 ## The complete P2SH address
@@ -113,7 +113,7 @@ The final addresses is made out of:
 2. The hashed_P2WPKH_V0
 3. The checksum
 ```
-bin_addr = bytes.fromhex('05') + hashed_P2WPKH_V0 + checksum
+bin_addr = bytes.fromhex(f'05{hashed_P2WPKH_VO.hex()}{checksum.hex()}')
 ```
 ## Encoding
 ### Base58 (nested)
@@ -130,7 +130,12 @@ native_address = encode('bc', 0, keyhash)
 
 ## Resources
 https://bitcoincore.org/en/segwit_wallet_dev/
+
 https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki
+
 https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses
+
 https://en.bitcoin.it/wiki/Script
+
 https://en.bitcoin.it/wiki/Address
+
