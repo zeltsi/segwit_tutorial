@@ -1,6 +1,6 @@
 hash            = (bytes.fromhex('73c9fec091af7d5fa74650e758b40b4f9895404d1cb95193b6ec059a541dd44f'))[::-1]
 # Yes, it's a real private key. You can have a go with it, but please try to recharge this address so that others might get to try it too
-private_key     = bytes.fromhex("BF9795D3FCB4E2181B7B536C22470123456789EA0001397C99BA94D4D4DD62801BB151B091")
+private_key     = bytes.fromhex("0c5453736c13e0cb4f364fa9bba7e614b82ac542c7c69bdd9f618730f195f7f1")
 #
 tx_out_count    = (1).to_bytes(1, byteorder="little", signed=False)
 
