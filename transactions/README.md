@@ -1,7 +1,7 @@
 # Segwit transaction
 How segwit transactions are serelized. The flowchart follows the relation between the different components in the code. 
 
-![Flowchart]("https://github.com/zeltsi/segwit_tutorial/tree/master/transactions/doc/flowchart.svg")
+![Flowchart](./doc/flowchart.svg)
 ## Double sha256:
 Normally, I avoid defining any functions in my tutorials. However, in this case I'll make an exception and define a simple `dSHA256(raw)` function that takes a binary array and returns its result hashed twice (`sha256(sha256(raw))`).
 This double sha process repeats itself quite extensevillasy in bitcoin's transactions and pre-defining this function will make it much more easy to follow the flowchart.
@@ -83,7 +83,7 @@ In this section we'll create two items:
 2. hashPrevouts
 
 The Prevouts is a combination of the hash of the previous transaction and the index number of the output we want to spend - It basically points back to the origins of the coins that we're about to spend. This information should be available on the blockchain and you can find it using any [good blockchain explorer](https://blockstream.info/tx/73c9fec091af7d5fa74650e758b40b4f9895404d1cb95193b6ec059a541dd44f).
-![TxHash]("https://github.com/zeltsi/segwit_tutorial/tree/master/transactions/doc/txhash.png")
+![TxHash](./doc/txhash.png)
 
 This information should be parsed in to ways.
 1. As a simple outpoint, as defined in the [bitcoin's developer reference](https://bitcoin.org/en/developer-reference#raw-transaction-format). 
@@ -98,7 +98,7 @@ hashPrevouts = dSHA256(Prevouts)
 ## Amount:
 This field is mentioned in the BIP-143 list. It's the amount of money that we've recievd as part of the prevouts (outpoint).
 This information should be available on the blockchain and you can find it using any [good blockchain explorer](https://blockstream.info/tx/73c9fec091af7d5fa74650e758b40b4f9895404d1cb95193b6ec059a541dd44f).
-![Amount]("https://github.com/zeltsi/segwit_tutorial/tree/master/transactions/doc/amount.png")
+![Amount](./doc/amount.png)
 According to 
 ```python
 amount = (int(0.00135501 * 100000000).to_bytes(8, byteorder="little", signed=True))
@@ -213,7 +213,7 @@ witness = (
   + public_key  # Public key
 )
 ```
-![Witness]("https://github.com/zeltsi/segwit_tutorial/tree/master/transactions/doc/segwit.png")
+![Witness](./doc/segwit.png)
 
 ## Tx_in_count:
 According to [bitcoin's glossary](https://bitcoin.org/en/glossary/compactsize) - this field should be a unique type of integer known as `varint` or `CompactSize`. In our case, because there's only one input that in the transaction that we're constructing, we'll use uint4 little endian.
@@ -235,7 +235,7 @@ tx_out_count = (1).to_bytes(1, byteorder="little", signed=False)
 
 ## FinalTx:
 Just add all the variables in the right order and Voila!
-![final]("https://github.com/zeltsi/segwit_tutorial/tree/master/transactions/doc/final.png")
+![final](./doc/final.png)
 ```python
 final_tx = (
   version
@@ -254,4 +254,4 @@ final_tx = (
 )
 ```
 You can now compare your segwit transaction to the following serialization.
-![final]("https://github.com/zeltsi/segwit_tutorial/tree/master/transactions/doc/final.png")
+![final](./doc/final.png)
